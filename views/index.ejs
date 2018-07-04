@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- link for JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Boostrap CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <!-- Socket Link -->
+    <script type ="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type ="text/javascript"></script>
+    
+    <title>Great Button Game</title>
+
+    <script>
+    $(document).ready(function(){
+        // Create the socket connection to the server
+        var socket = io();
+        // Create the click event to listen for the click of the button with id epic_button
+        $('#epic_button').click(function(){
+            // Emit to server via socket
+            socket.emit('count');
+        })
+        // Create the click event to listen of button click with id = clear
+        $('#clear').click(function(){
+            // Emit to server via socket
+            socket.emit('clear');
+        })
+        // Recieve socket response via socket and listen for 'response' name
+        socket.on('response', function(data){
+            // Use jquery to change the html of elemet with class = "number"
+            $('.number').html(data)
+        })
+        // Recueve sicket response via socket and listen for 'clear' name
+        socket.on('clear', function(data){
+            // Use jquery to change the html of elemet with class = "clear"
+            $('.number').html(data)
+        })
+    });
+    
+    </script>
+
+</head>
+<body>
+
+    <div class="container text-center" style="margin-top:30px;">
+        <h1>Epic Button Game</h1>
+        <div class="main">
+            <!-- span tag with class = number will change with every click of epic button -->
+            <h3>The button has been pushed <strong><span class="number">0</span></strong> time(s)</h3>
+            <h5>Push the button to update the count</h5>
+            <!-- button to initaite increment the count -->
+            <input class="btn btn-success" type="button" id="epic_button" value="Push the epic button">
+            <!-- button to reset count -->
+            <input class="btn btn-danger" type="button" id="clear" value="clear">
+        </div>
+
+    </div>
+    
+</body>
+</html>
